@@ -94,7 +94,44 @@ class ProjectList(generics.ListCreateAPIView):
         serializer = ProjectDetailSerializer(project)
         project.delete()
         return Response(ProjectDetailSerializer.data, status=status.HTTP_204_NO_CONTENT)
+<<<<<<< Updated upstream
     
+=======
+
+
+class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    def get_object(self, pk):
+        try:
+            project = Project.objects.get(pk=pk)
+            self.check_object_permissions(self.request, project)
+            return project
+        except Project.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        project = self.get_object(pk)
+        serializer = ProjectDetailSerializer(project)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        project = self.get_object(pk)
+        data = request.data
+        serializer = ProjectDetailSerializer(
+            instance=project, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+    def delete(self, request, id=None):
+        project = self.get_object(id=id)
+        serializer = ProjectDetailSerializer(project)
+        project.delete()
+        return Response(ProjectDetailSerializer.data, status=status.HTTP_204_NO_CONTENT)
+
+>>>>>>> Stashed changes
 
 '''Pledge Create Only - NO EDITS / COMMENTS CAN NOT BE DELETED UNLESS USER IS DELETED'''
 '''Logged in users are able to view & add pledges. Not logged in, view only'''

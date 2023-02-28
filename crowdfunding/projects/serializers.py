@@ -10,9 +10,13 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+<<<<<<< Updated upstream
         # fields = ['id', 'project', 'title', 'content', 'author']
         # read_only_fields = ['id']
         
+=======
+
+>>>>>>> Stashed changes
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)
     
@@ -26,9 +30,13 @@ class PledgeSerializer(serializers.ModelSerializer):
     supporter = serializers.ReadOnlyField(source='supporter.username')
     class Meta:
         model = Pledge
+<<<<<<< Updated upstream
         # fields = ['id', 'amount', 'comment','anonymous', 'project', 'supporter']
         # read_only_fields = ['id', 'supporter']
         fields = '__all__' 
+=======
+        fields = '__all__'
+>>>>>>> Stashed changes
         '''THIS LINE __all__ replaces the needs in the model.serializer to dd the fields seperately'''
 
     def create(self, validated_data):
@@ -39,6 +47,7 @@ class PledgeSerializer(serializers.ModelSerializer):
         return instance
         
 
+<<<<<<< Updated upstream
 '''Project Serializer / Form'''
 class ProjectSerializer(serializers.ModelSerializer):
     # id = serializers.ReadOnlyField()
@@ -53,6 +62,32 @@ class ProjectSerializer(serializers.ModelSerializer):
     # owner_id = serializers.ReadOnlyField(source='owner.id')
     # owner_username = serializers.ReadOnlyField(source='owner.username')
     # total = serializers.ReadOnlyField()
+=======
+
+class PledgeDetailSerializer(serializers.ModelSerializer):
+    project = serializers.SlugRelatedField(
+        queryset=Project.objects.all(), slug_field="title")
+
+    class Meta:
+        model = Pledge
+        fields = '__all__'
+        read_only_fields = ["id", "supporter", "amount", "project"]
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    goal = serializers.IntegerField()
+    sum_pledges = serializers.ReadOnlyField()
+    goal_balance = serializers.ReadOnlyField()
+    id = serializers.ReadOnlyField()
+    title = serializers.CharField(max_length=200)
+    description = serializers.CharField(max_length=None)
+    goal = serializers.IntegerField()
+    image = serializers.URLField()
+    is_open = serializers.BooleanField()
+    date_created = serializers.DateTimeField()
+    owner_username = serializers.ReadOnlyField(source='owner.username')
+    total = serializers.ReadOnlyField()
+>>>>>>> Stashed changes
 
     class Meta:
         model = Project
@@ -96,8 +131,18 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
+<<<<<<< Updated upstream
     liked_by = CustomUserSerializer(many=True, read_only=True)
     
+=======
+    comments = CommentSerializer(many=True, read_only=True)
+    # liked_by = CustomUserSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+>>>>>>> Stashed changes
 
 '''Category Serializer'''
 class CategorySerializer(serializers.ModelSerializer):
