@@ -1,0 +1,48 @@
+		"username": "samsam1",
+		"email": "samsam1@samsam1.com",
+		"password": "samsam1234",
+		"password2": "samsam1234",
+		"first_name": "Sam", 
+		"last_name": "Sam"
+
+
+		"username": "Jondoe1",
+		"email": "jondoe1@jondoe1.com",
+		"password": "jondoe123",
+		"password2": "jondoe123",
+		"first_name": "Jon", 
+		"last_name": "Doe"
+
+
+		"username": "SamSmtih",
+		"email": "samsmith@samsmith.com",
+		"password": "samsmith123",
+		"password2": "samsmith123",
+		"first_name": "Sam", 
+		"last_name": "Smith"
+
+		"username": "BenBrown",
+		"email": "BenBrow1@BenBrown1.com",
+		"password": "BenBrown1",
+		"password2": "BenBrown1",
+		"first_name": "Ben", 
+		"last_name": "Brown"
+	
+    
+		"username": "testuser",
+		"email": "testuser@testuser.com",
+		"password": "testuser1",
+		"password2": "testuser1",
+		"first_name": "Test", 
+		"last_name": "User"
+	
+{
+		"username": "candycane",
+		"email": "candycane@candycane.com",
+		"password": "candycane123",
+		"password2": "candycane123",
+		"first_name": "Cancy", 
+		"last_name": "Cain"
+	
+}
+
