@@ -10,19 +10,26 @@ class CustomUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=200)
     first_name = serializers.CharField(max_length=200)
     last_name = serializers.CharField(max_length=200)
+    
+    # email field required where email is to be unique. If email being used by someone else a validation error 
     email = serializers.EmailField(required=True,
                                    validators=[UniqueValidator(queryset=CustomUser.objects.all())])
+    # password field validation 
     password = serializers.CharField(
+        # write only = true means it will be recorded. No output on serialiser. P/W field is required . 
+        # validate p/w is import from django 
         write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = CustomUser
         fields = ['username', 'first_name', 'last_name',
-                  'email', 'password', 'password2']
+                  'email', 'password', 'password2', 'id']
         extra_kwargs = {'first_name': {'required': True},
                         'last_name': {'required': True}}
 
+    # create a user in the custom user database only when data is valid with the below minimum values 
+    # it then saves but only once password is also validated 
     def create(self, validated_data):
         user = CustomUser.objects.create(
             username=validated_data['username'],
@@ -34,11 +41,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    # password validator, if pass doesn't equal then throw an arror & msg otherwise save 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError(
                 {"password": "Your password fields didn't match."})
         return attrs
+
 
 
 class CustomUserDetailSerializer(CustomUserSerializer):

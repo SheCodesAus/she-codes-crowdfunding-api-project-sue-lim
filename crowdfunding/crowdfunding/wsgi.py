@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+# set up required for the Django to know how the project will function correctly. 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'crowdfunding.settings')
 
 application = get_wsgi_application()

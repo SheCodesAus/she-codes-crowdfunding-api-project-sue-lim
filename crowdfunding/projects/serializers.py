@@ -3,55 +3,56 @@ from .models import Project, Pledge, Comment, Category, Favourite
 from rest_framework import serializers
 from users.serializers import CustomUserSerializer
 
-'''Serializer / Forms'''
-
-
+# Serialser is like a translator that helps django apps communicate with other systems & apps. In this case Json for it to be presented in a human-readable way. 
 class CommentSerializer(serializers.ModelSerializer):
     commentator = serializers.ReadOnlyField(source='commentator.username')
-    # project = serializers.SlugRelatedField(
-    #     queryset=Project.objects.all(), slug_field="title")
-
+    # slugs used to represent a relationship to another model by using a specific field from that model - project = title 
+    project = serializers.SlugRelatedField(
+        queryset=Project.objects.all(), slug_field="title")
     class Meta:
         model = Comment
         fields = '__all__'
         # fields = ['id', 'project', 'title', 'content', 'author']
         # read_only_fields = ['id']
 
+    # get_commentators username
     def get_commentator(self, obj):
         if obj.anonymous:
             return None
         else:
             return obj.commentator.username
-        
+    
+    # creating the comment and validating the data received in the request. 
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)
 
+    # saves and updates the comment and returns the instance 
     def update(self, instance, validated_data):
         instance.save()
         return instance
     
 class CommentDetailSerializer(serializers.ModelSerializer):
-        # project = serializers.SlugRelatedField(
-    #     queryset=Project.objects.all(), slug_field="title")
+        project = serializers.SlugRelatedField(
+        queryset=Project.objects.all(), slug_field="title")
 
-    class Meta:
-        model = Comment
-        fields = '__all__'
-        # fields = ['id', 'project', 'title', 'content', 'commentator']
-        read_only_fields = ['id','commentator']
+        class Meta:
+            model = Comment
+            fields = '__all__'
+            # fields = ['id', 'project', 'title', 'content', 'commentator']
+            read_only_fields = ['id','commentator']
 
 
 class PledgeSerializer(serializers.ModelSerializer):
     supporter = serializers.ReadOnlyField(source='supporter.username')
-    # project = serializers.SlugRelatedField(
-    #     queryset=Project.objects.all(), slug_field="title")
+    project = serializers.SlugRelatedField(
+        queryset=Project.objects.all(), slug_field="title")
 
     class Meta:
         model = Pledge
-        # fields = ['id', 'amount', 'comment','anonymous', 'project', 'supporter']
-        # read_only_fields = ['id', 'supporter']
-        fields = '__all__'
-        '''THIS LINE __all__ replaces the needs in the model.serializer to dd the fields seperately'''
+        fields = ['id', 'amount', 'comment','anonymous', 'project', 'supporter']
+        read_only_fields = ['id', 'supporter']
+        # fields = '__all__'
+
 
     def get_supporter(self, obj):
         if obj.anonymous:
@@ -59,27 +60,30 @@ class PledgeSerializer(serializers.ModelSerializer):
         else:
             return obj.supporter.username
 
+    # creating the plede and validating the data received in the request. 
     def create(self, validated_data):
         return Pledge.objects.create(**validated_data)
 
+    # saves and updates the comment and returns the instance 
     def update(self, instance, validated_data):
         instance.save()
         return instance
 
 
 class PledgeDetailSerializer(serializers.ModelSerializer):
-    # project = serializers.SlugRelatedField(
-    #     queryset=Project.objects.all(), slug_field="title")
+    project = serializers.SlugRelatedField(
+        queryset=Project.objects.all(), slug_field="title")
 
     class Meta:
         model = Pledge
         fields = '__all__'
         # fields = ["id", "amount", "comment", "anonymous",
         #           "project", "supporter", "date_pledged"]
-        read_only_fields = ["id", "supporter", "amount", "project"]
+        # read_only_fields = ["id", "supporter", "amount", "project"]
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    # fields 
     goal = serializers.IntegerField()
     sum_pledges = serializers.ReadOnlyField()
     goal_balance = serializers.ReadOnlyField()
@@ -119,4 +123,5 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class CategoryDetailSerializer(CategorySerializer):
+    # holding many projects in a read only vie w
     category_projects = ProjectSerializer(many=True, read_only=True)

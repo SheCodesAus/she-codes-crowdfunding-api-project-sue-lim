@@ -14,7 +14,6 @@ from rest_framework.settings import api_settings
 
 '''PROJECT LIST VIEW FOR PROJECTS & IF LOGGED IN YOU CAN ADD / DELETE PROJECTS'''
 
-
 class ProjectList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Project.objects.all()
