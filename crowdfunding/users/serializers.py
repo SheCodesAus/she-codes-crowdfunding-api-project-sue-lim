@@ -63,7 +63,7 @@ class CustomUserDetailSerializer(CustomUserSerializer):
 # class CustomUserRegisterSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = CustomUser
-
+# below not implemented 
 
 class CustomUserChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
